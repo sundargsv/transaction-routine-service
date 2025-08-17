@@ -20,6 +20,12 @@ docker-compose up -d postgres redis
 ./mvnw spring-boot:run
 ```
 
+Once the application is running, you can access the API documentation via Swagger UI:
+
+```
+http://localhost:8080/swagger-ui/index.html
+```
+
 **API will be available at:** `http://localhost:8080`
 
 ---
@@ -156,6 +162,14 @@ docker-compose up -d postgres redis
 # Build and run the application using maven wrapper in the terminal or just start the spring boot application (TransactionRoutineApplication.java) in an IDE like intellij
 ./mvnw clean install
 ./mvnw spring-boot:run
+```
+
+## Swagger UI
+
+After starting the application, access Swagger UI at:
+
+```
+http://localhost:8080/swagger-ui/index.html
 ```
 
 ### Running Tests

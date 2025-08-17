@@ -1,5 +1,6 @@
 package com.poc.transaction.api;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/app") // this may be redundant if the application is already configured with a base path or in ingress
+@Tag(name = "Health API", description = "Operations related to application health and version")
 public class ApplicationApi {
     // This endpoint is used to check the health of the service
     @GetMapping(path = {"/version"})
