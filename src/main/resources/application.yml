@@ -17,3 +17,14 @@ spring:
     redis:
       host: localhost
       port: 6380
+
+  kafka:
+    bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS:localhost:9094}
+    admin:
+      auto-create: true  # Ensures KafkaAdmin can create topics
+    consumer:
+      group-id: consumer
+      auto-offset-reset: earliest
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer

@@ -9,6 +9,11 @@ public final class Constants {
 
     public static final String CACHE_PREFIX = "account:";
 
+    public static class KafkaTopics {
+        public static final String NOTIFICATION = "notification.requested";
+        public static final String AUDIT_LOG = "audit.log.requested";
+    }
+
     //No instance can be created
     private Constants() {}
 }

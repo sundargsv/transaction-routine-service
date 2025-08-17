@@ -45,6 +45,8 @@ This solution prioritizes **simplicity** as requested in the evaluation criteria
 
 ## Architecture
 
+### Primary Architecture (Main Branch)
+
 Simple, direct architecture focusing on core business logic:
 
 ![Architecture Diagram](docs/Transaction-processing-Simplev2.drawio.png)
@@ -55,6 +57,13 @@ Simple, direct architecture focusing on core business logic:
 - Synchronous processing for predictable behavior
 - Clean service separation (Account vs Transaction)
 - Caching for performance optimization
+
+### Alternative Architecture (Event-Driven Branch)
+For those interested in async patterns, the `feature/event-driven` branch demonstrates:
+
+![Architecture Diagram - 2](docs/Transaction-processing-scalable-solution.drawio.png)
+
+*Note: All components run in the same Spring Boot application with mocked consumers for demonstration.*
 
 ---
 

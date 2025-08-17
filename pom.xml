@@ -41,6 +41,11 @@
 			<optional>true</optional>
 		</dependency>
 
+		<dependency>
+			<groupId>org.springframework.kafka</groupId>
+			<artifactId>spring-kafka</artifactId>
+		</dependency>
+
 		<!-- Java Bean Validation API -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

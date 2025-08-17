@@ -12,6 +12,8 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - transaction-network
 
   redis:
     image: redis:7
@@ -19,6 +21,33 @@ services:
     ports:
       - "6380:6379"
     command: ["redis-server", "--appendonly", "yes"]
+    networks:
+      - transaction-network
+
+  kafka:
+    image: bitnami/kafka:3.5
+    container_name: kafka-broker
+    ports:
+      - "9094:9094"  # for external access
+      - "9092:9092"  # optional if you want internal access mapped
+    environment:
+      - KAFKA_ENABLE_KRAFT=yes
+      - KAFKA_CFG_NODE_ID=1
+      - KAFKA_CFG_PROCESS_ROLES=broker,controller
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@kafka-broker:9093
+#      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093
+#      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
+#      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT
+#      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,PLAINTEXT_HOST://:9094,CONTROLLER://:9093
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:9094
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT,CONTROLLER:PLAINTEXT
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - ALLOW_PLAINTEXT_LISTENER=yes
+    volumes:
+      - kafka_data:/bitnami/kafka
+    networks:
+      - transaction-network
 
   txn-app:
     build: .
@@ -28,13 +57,23 @@ services:
     depends_on:
       - postgres
       - redis
+      - kafka
+    networks:
+      - transaction-network
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/accounts_db
       SPRING_DATASOURCE_USERNAME: user
       SPRING_DATASOURCE_PASSWORD: password
       SPRING_DATA_REDIS_HOST: redis
       SPRING_DATA_REDIS_PORT: 6379
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
     restart: on-failure
 
 volumes:
   postgres_data:
+  kafka_data:
+
+# Network for service communication
+networks:
+  transaction-network:
+    driver: bridge
