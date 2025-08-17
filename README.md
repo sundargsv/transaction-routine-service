@@ -6,7 +6,8 @@ Clean, simple transaction processing system built with maintainability and testa
 
 ```bash
 # To start Infrastructure & Application together
-docker-compose up -d    # which will run PostgreSQL, Redis and along with the java application
+# when using --build option, it will build the application first and then start the services
+docker-compose up -d --build   # which will run PostgreSQL, Redis and along with the java application
 ```
 
 OR
@@ -128,6 +129,7 @@ txn-routine-svc/
  │   ├── model/           # Entities & DTOs
  │   ├── config/          # Configuration Classes
  │   ├── exception/       # exception Classes & global exception handler
+ │   ├── handlers/       # extra handlers
  │   └── TransactionRoutineApplication.java
  ├── src/test/java/...    # Unit & Integration tests
  ├── pom.xml              # Maven dependencies
@@ -142,7 +144,8 @@ txn-routine-svc/
 ### Option 1: Docker Compose (Recommended)
 ```bash
 # Start all services including PostgreSQL, Redis, and the application
-docker-compose up -d
+# when using --build option, it will build the application first and then start the services - Use this build option on running first time
+docker-compose up -d --build
 ```
 
 ### Option 2: Local Development
@@ -167,7 +170,7 @@ docker-compose up -d postgres redis
 
 **Interested in event-driven patterns?** 
 
-Check the `feature/event-driven` branch for a demonstration of how this system could scale with:
+Check the [feature/event-driven](https://github.com/sundargsv/transaction-routine-service/tree/feature/event-driven?tab=readme-ov-file#alternative-architecture-event-driven-branch) -> [Click here](https://github.com/sundargsv/transaction-routine-service/tree/feature/event-driven?tab=readme-ov-file#alternative-architecture-event-driven-branch) branch for a demonstration of how this system could scale with:
 - Async audit logging via Kafka simulation (mocked)
 - Event-driven notifications (mocked)
 - Saga pattern exploration for distributed transactions
