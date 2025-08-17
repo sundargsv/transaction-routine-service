@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: txn-routine-svc
+  datasource:
+    url: jdbc:postgresql://localhost:5432/accounts_db
+    username: user
+    password: password
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect # this may not require
+
+  data:
+    redis:
+      host: localhost
+      port: 6380
