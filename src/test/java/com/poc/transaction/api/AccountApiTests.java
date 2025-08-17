@@ -2,33 +2,46 @@ package com.poc.transaction.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.poc.transaction.exception.ApiException;
+import com.poc.transaction.exception.GlobalExceptionHandler;
 import com.poc.transaction.model.request.AccountRequest;
 import com.poc.transaction.model.response.AccountResponse;
 import com.poc.transaction.service.account.AccountService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@SpringBootTest
-@AutoConfigureMockMvc
+@ExtendWith(MockitoExtension.class)
 public class AccountApiTests {
 
-    @Autowired
     private MockMvc mockMvc;
 
     // We mock the service layer so no DB/cache calls are made
-    @MockBean // MockBean is depcrecated in spring boot 3.4.x+, need to change this integration tests with full TestContainers for db, cache, etc.
+    // @MockBean // MockBean is depcrecated in spring boot 3.4.x+, need to change this integration tests with full TestContainers for db, cache, etc.
+    @Mock
     private AccountService accountService;
+
+    @InjectMocks
+    private AccountApi accountApi;
+
+    @BeforeEach
+    void setup() {
+        mockMvc = MockMvcBuilders.standaloneSetup(accountApi)
+                // registering manually, since we are not using @SpringBootTest & @ControllerAdvice is not auto-detected in standalone mode
+                .setControllerAdvice(new GlobalExceptionHandler())
+                .build();
+    }
 
     @Test
     void testCreateAccount_success() throws Exception {
