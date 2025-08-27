@@ -26,6 +26,7 @@ public class TransactionMapper {
                 .accountId(entity.getAccount().getAccountId())
                 .operationTypeId(entity.getOperationTypeId())
                 .amount(entity.getAmount())
+                .balance(entity.getBalance())
                 .eventDate(entity.getEventDate())
                 .build();
     }

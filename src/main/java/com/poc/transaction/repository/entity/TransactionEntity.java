@@ -33,6 +33,10 @@ public class TransactionEntity {
     @Column(nullable = false, precision = 15, scale = 2)
     private BigDecimal amount;
 
+    //TODO: mak it not null
+    @Column(precision = 15, scale = 2)
+    private BigDecimal balance;
+
     @Column(nullable = false)
     private LocalDateTime eventDate;
 
